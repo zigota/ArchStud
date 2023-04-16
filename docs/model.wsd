@@ -1,0 +1,88 @@
+```plantuml
+@startuml
+
+namespace partySub {
+
+ class partes
+ {
+  id : long
+  info: partyInfo
+  partyType: partyTypes
+ }
+ class partyInfo
+ {  
+    id: long;
+    party: partes
+    name: string
+    lastName: string
+    company:string
+ }
+ enum partyTypes
+ {
+    id: long
+    typeName: string
+ }
+
+class speeches
+{
+    id : long
+    speaker: partes
+    theme: string
+    duration: datetime
+}
+class speechesComments
+{
+    id : long
+    speech: speeches
+    party: partes
+    text: string   
+}
+class speechesRatings
+{
+    id : long
+    speech: speeches
+    party: partes
+    rating: int   
+}
+
+
+class reviews
+{  
+   id: long
+   revier: partes
+   speech: speeches
+   reviewDate: datetime
+   reviewText: string
+   reviewEvaluation: string
+}
+
+class conferences
+{
+    id: long
+    theme: string;
+    date: datetime;
+}
+class conferencesTimetables
+{
+    id: long;
+    conference: conferences
+    speeches: speeches
+    order: int
+}
+ 
+ partes -- partyTypes
+ partes -- partyInfo
+ speeches -- partes
+ speechesComments -- partes
+ reviews -- partes
+ reviews -- speeches
+ speechesRatings -- partes
+ speechesRatings -- speeches
+ conferencesTimetables -- conferences
+ conferencesTimetables -- speeches
+ speechesComments -- speeches
+ speechesComments -- partes
+
+ 
+@enduml
+```

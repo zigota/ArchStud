@@ -1,7 +1,33 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person(personAlias, "Label", "Optional Description")
+LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
 
+Person(speaker, "Спикер")
+Person(user, "Слушатель")
+Person(reviewer, "Рецензент")
+Person(admin, "Администратор")
+
+System_Boundary(system, "helloconf"){ 
+
+Container(reGa,"система управлени докладами")
+Container(schedule,"система управления расписанием")
+Container(rating,"система рейтингов")
+Container(traslation,"трансляция конференций")  
+}
+
+
+Rel(speaker, reGa, "Регистрация докладов")
+Rel(reviewer, reGa, "рецензирование")
+Rel(schedule, reGa, "формирование описанием доклада")
+Rel(admin, schedule, "утверждение и редактирование  расписаний")
+Rel(schedule, traslation, "наполнение конференций")
+Rel(reGa, traslation, "информация о докладе")
+Rel(speaker, traslation, "выступление на конференции")
+Rel(user, traslation, "участие в концернеции")
+Rel(user, traslation, "вопросы и обратная свзяь")
+Rel(reGa, rating, "формирование рейтингов ")
 
 @enduml
