@@ -71,17 +71,17 @@ class conferencesTimetables
 }
  
  partes -- partyTypes
- partes -- partyInfo
- speeches -- partes
- speechesComments -- partes
- reviews -- partes
- reviews -- speeches
- speechesRatings -- partes
- speechesRatings -- speeches
- conferencesTimetables -- conferences
- conferencesTimetables -- speeches
- speechesComments -- speeches
- speechesComments -- partes
+ partes *-- "1" partyInfo
+ speeches *-- "*" partes
+ speechesComments *-- "*" partes
+ reviews *-- "*"partes
+ reviews *-- "*" speeches
+ speechesRatings *-- "*" partes
+ speechesRatings *-- "*" speeches
+ conferencesTimetables *-- "*" conferences
+ conferencesTimetables *-- "*"speeches
+ speechesComments *-- "*" speeches
+ speechesComments *-- "*" partes
 
  
 @enduml
