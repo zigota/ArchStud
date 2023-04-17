@@ -1,96 +1,89 @@
 # Модель предметной области
-<!-- Логическая модель, содержащая бизнес-сущности предметной области, атрибуты и связи между ними. 
-Подробнее: https://confluence.mts.ru/pages/viewpage.action?pageId=375782602
-
-Используется диаграмма классов UML. Документация: https://plantuml.com/class-diagram 
--->
-
 ```plantuml
 @startuml
-' Логическая модель данных в варианте UML Class Diagram (альтернатива ER-диаграмме).
-namespace ShoppingCart {
 
- class ShoppingCart
- {
-  id : string
-  createDate : datetime
-  updateDate : datetime
-  customer : Customer
-  price : ShoppingCartPrice
-  cartItems : CartItem[]
- }
+namespace partySub {
 
- class ShoppingCartPrice
+ class partes
  {
-  type : CartItemPrice
+  id : long
+  info: partyInfo
+  partyType: partyTypes
  }
- class CartItemPrice
- {
-  type : CartItemPriceType
+ class partyInfo
+ {  
+    id: long;
+    party: partes
+    name: string
+    lastName: string
+    company:string
  }
-
- enum CartPriceType
+ enum partyTypes
  {
-  total
-  grandTotal
-  offeringDiscount
-  couponsDiscount
+    id: long
+    typeName: string
  }
 
- class CartItem
- {
-  id : string
-  quantity : int
-  offering : Offering
-  relationship : CartItemRelationShip[]
-  price : CartItemPrice[]
-  status : CartItemStatus
- }
+class speeches
+{
+    id : long
+    speaker: partes
+    theme: string
+    duration: datetime
+}
+class speechesComments
+{
+    id : long
+    speech: speeches
+    party: partes
+    text: string   
+}
+class speechesRatings
+{
+    id : long
+    speech: speeches
+    party: partes
+    rating: int   
+}
 
-  class Customer
- {
-  id : string
- }
+
+class reviews
+{  
+   id: long
+   revier: partes
+   speech: speeches
+   reviewDate: datetime
+   reviewText: string
+   reviewEvaluation: string
+}
+
+class conferences
+{
+    id: long
+    theme: string;
+    date: datetime;
+}
+class conferencesTimetables
+{
+    id: long;
+    conference: conferences
+    speeches: speeches
+    order: int
+}
  
- class Offering
- {
-  id : string
-  isQuantifiable : boolean
-  actionType : OfferingActionType
-  validFor : ValidFor
- }
-  
- class ProductSpecificationRef
- {
-  id : string
- }
+ partes -- partyTypes
+ partes *-- "1" partyInfo
+ speeches *-- "*" partes
+ speechesComments *-- "*" partes
+ reviews *-- "*"partes
+ reviews *-- "*" speeches
+ speechesRatings *-- "*" partes
+ speechesRatings *-- "*" speeches
+ conferencesTimetables *-- "*" conferences
+ conferencesTimetables *-- "*"speeches
+ speechesComments *-- "*" speeches
+ speechesComments *-- "*" partes
+
  
- ShoppingCart *-- "1..*" ShoppingCartPrice
- ShoppingCartPrice -- CartPriceType
- ShoppingCart *-- "*" CartItem
- CartItem *-- "*" CartItemPrice
- CartItemPrice -- CartPriceType
- CartItem *-- "1" Offering
- Offering *-- "1" ProductSpecificationRef
- Offering *-- "0..1" ProductConfiguration
- ShoppingCart *-- "1" Customer
-}
-
-namespace Ordering {
- ProductOrder *-- OrderItem
- OrderItem *-- Product
- Product *-- ProductSpecificationRef
- ProductOrder *-- Party
-}
-
-namespace ProductCatalog {
- ShoppingCart.ProductSpecificationRef ..> ProductSpecification : ref
- Ordering.ProductSpecificationRef ..> ProductSpecification : ref
-}
-
-namespace CX {
- ShoppingCart.Customer ..> Customer : ref
- Ordering.Party ..> Customer : ref
-}
 @enduml
 ```
