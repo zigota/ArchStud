@@ -1,0 +1,73 @@
+@startuml
+
+'!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+!include <c4/C4_Component.puml>  
+
+
+LAYOUT_WITH_LEGEND()
+
+
+title Контейнерная диаграма к домашке
+
+Container(preza, "Presentaion Application", "frontend", "Ui для просмотра онлайн конференций")
+Container(adminka, "Admin Application", "frontend", "Ui для администраторов, рецензентов и тд")
+
+
+
+
+
+'!System_Ext(")
+
+Container_Boundary(api, "backend") {
+    Component(mainBFFService, "Главный сервис", "микросервис", "Гейтвей/БФФ")
+    System_Boundary(partyManagement, "Управление участниками"){  
+        Component(partesService, "Сервис работы с персонами", "микросервис", "Сервис работет выполняет curd операции")
+        ContainerDb(dbpartes, "partes" )
+        ContainerDb(dbpartyInfo, "partyInfo" )
+    }
+    System_Boundary(docladManagement, "Управление докладами"){    
+        Component(speechesService, "Сервис работы с докладами", "микросервис", "Сервис работет выполняет curd операции")
+         Component(reviewsService, "Сервис работы с рецензиями", "микросервис", "Сервис работет выполняет curd операции")
+        ContainerDb(dbreviews, "reviews" )
+        ContainerDb(dbspeeches, "speeches" )
+        ContainerDb(dbspeechesComments, "speechesComments" )
+    }
+    System_Boundary(confSystem, "Конференции"){   
+           
+    Component(conferencesService, "Сервис работы с конференциями", "микросервис", "Сервис работет выполняет curd операции")
+    
+    Component(timetablesService, "Сервис работы с расписаниями", "микросервис", "Сервис работет выполняет curd операции" )    
+     ContainerDb(dbconferencesTimetables, "conferencesTimetables" )
+     ContainerDb(dbconferences, "conferences" )
+
+    }
+
+    System_Boundary(confRating, "Рейтинги"){   
+        Component(ratingService, "Сервис работы с рейтингами докладов", "микросервис", "Сервис работет выполняет curd операции" ) 
+        ContainerDb(dbspeechesRatings, "speechesRatings" )
+    }
+
+
+    Rel(preza, mainBFFService, "","" )
+    Rel(adminka, mainBFFService, "","" )
+
+    Rel(mainBFFService, partesService, "","" )
+    Rel(mainBFFService, speechesService, "","" )
+
+    Rel(mainBFFService, partesService, "","" )
+    Rel(mainBFFService, speechesService, "","" )
+    Rel(mainBFFService, reviewsService, "","" )
+    Rel(mainBFFService, conferencesService, "","" )
+    Rel(mainBFFService, ratingService, "","" )
+    Rel(mainBFFService, timetablesService, "","" )
+
+    Rel(partesService, dbpartes, "Read  write ", "")
+    Rel(partesService, dbpartyInfo, "Read  write ", "")
+    Rel(speechesService, dbspeeches, "Read  write ", "")
+    Rel(speechesService, dbspeechesComments, "Read  write ", "")
+    Rel(reviewsService, dbreviews, "Read  write ", "")
+    Rel(ratingService, dbspeechesRatings, "Read  write ", "")
+    Rel(conferencesService, dbconferences, "Read  write ", "")
+    Rel(timetablesService, dbconferencesTimetables, "Read  write ", "")
+
+@enduml

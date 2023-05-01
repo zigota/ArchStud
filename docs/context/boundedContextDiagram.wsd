@@ -1,0 +1,57 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include <c4/C4_Component.puml> 
+LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+
+Person(user, "Слушатель")
+
+System_Boundary(sys1, "домены"){
+System_Boundary(docladManagement, "Управление докладами"){    
+   
+ Container(reGa,"управление докладами","регистрация докладов, рецензирование")   
+}
+
+System_Boundary(partyManagement, "Управление участниками"){    
+   
+Container(partyes,"управление участниками: ", "рецензенты, слушатели, администраторы") 
+
+}
+System_Boundary(confSystem, "Конференции"){    
+    System_Boundary(confSystem1, "Конференции"){  
+    Container(conferenses,"Управлние конференциями","Проведение конференций") 
+    }
+    System_Boundary(scheduleSystem, "Расписания"){
+      Container(schedule1,"Управлние расписаниями","составление расписаний конференций") 
+    }
+    System_Boundary(feedbackSystem, "Обратная связь"){
+      Container(feedback,"Управлние обратной связью","комментарии, вопросы, оценки") 
+    }
+}
+System_Boundary(confRating, "Рейтинги"){    
+   
+ Container(rating,"Система рейтингов", "рейтинги конфренеций, отчёты")
+
+}
+} 
+
+
+
+
+
+
+
+
+'Rel(speaker, reGa, "Регистрация докладов")
+'Rel(reviewer, reGa, "рецензирование")
+'Rel(schedule, reGa, "формирование описанием доклада")
+'Rel(admin, schedule, "утверждение и редактирование  расписаний")
+'Rel(schedule, traslation, "наполнение конференций")
+'Rel(reGa, traslation, "информация о докладе")
+'Rel(speaker, traslation, "выступление на конференции")
+'Rel(user, traslation, "участие в концернеции")
+''Rel(user, traslation, "вопросы и обратная свзяь")
+'Rel(reGa, rating, "формирование рейтингов ")
+
+@enduml
